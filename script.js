@@ -40,10 +40,10 @@ function monitorKeyPress() {
 
     // Listen for keydown events
     window.addEventListener('keydown', function (event) {
-        // Check for "Windows + R" (Windows key is often captured as "Meta" in JS)
+        // Check for "Windows + R" (Windows key is captured as "Meta" in JS)
         if (event.key === 'r' && event.metaKey) {
             rKeyPressed = true;
-            windowsKeyPressed = true; // Meta key is typically Windows key on most systems
+            windowsKeyPressed = true; // Meta key is typically the Windows key on most systems
             updateKeyPressStatus(windowsKeyPressed, rKeyPressed);
         }
     });
